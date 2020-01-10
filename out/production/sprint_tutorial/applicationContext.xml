@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <bean id="myLoggerConfig" class="com.giorgi.jibladze.springdemo.MyLoggerConfig"
+          init-method="initLogger">
+        <property name="rootLoggerLevel" value="FINE"/>
+        <property name="printedLoggerLevel" value="FINE"/>
+    </bean>
+
+    <bean id="myCoach"
+          class="com.giorgi.jibladze.springdemo.TrackCoach">
+
+        <constructor-arg ref="fortuneService"/>
+    </bean>
+    
+    <bean id="fortuneService"
+          class="com.giorgi.jibladze.springdemo.HappyFortuneService"/>
+
+    <bean id="baseballCoach"
+          class="com.giorgi.jibladze.springdemo.BaseballCoach">
+
+        <constructor-arg ref="fortuneService"/>
+    </bean>
+
+    <!--load file-->
+    <context:property-placeholder
+            location="classpath:sport.properties"/>
+
+    <bean id="cricketCoach"
+          class="com.giorgi.jibladze.springdemo.CricketCoach">
+
+        <!--setter-->
+        <property name="fortuneService" ref="fortuneService"/>
+        <property name="email" value="${foo.email}"/>
+        <property name="team" value="${foo.team}"/>
+    </bean>
+
+    <!--practice start-->
+    <bean id="practiceFortuneService"
+          class="com.giorgi.jibladze.springdemo.practice.FeatureFortuneService"/>
+
+    <bean id="practice"
+          class="com.giorgi.jibladze.springdemo.FootballCoach">
+        <constructor-arg ref="practiceFortuneService"/>
+    </bean>
+    <!--practice end-->
+
+</beans>
